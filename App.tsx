@@ -1,24 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import HomeScreen from './screens/HomeScreen';
 import { customFontLocation } from './constants';
 import { useFonts } from "expo-font";
+import Dashboard from './screens/Dashboard';
+import { NavigationContainer } from '@react-navigation/native';
+import NavigationRoutes from './navigation'
 
 export default function App() {
   // FONT CONFIG
   const [fontsLoaded] = useFonts(customFontLocation);
   if (!fontsLoaded) return null;
-  
+
   return (
-    <SafeAreaView style={styles.container}>
-      <HomeScreen />
-    </SafeAreaView>
+    <NavigationContainer>
+      <NavigationRoutes />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});

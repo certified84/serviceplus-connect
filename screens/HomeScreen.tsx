@@ -30,16 +30,26 @@ import MenShaving from "../assets/svg/categories/MenShaving";
 import SpecialOffer from "../components/SpecialOffer";
 import Service from "../components/Service";
 import Chip from "../components/Chip";
+import { RouteProp, NavigationProp } from "@react-navigation/native";
+import { services } from "../store/dummy";
 
-type Props = {};
+type ScreenRouteProp = RouteProp<StackParamList, "HomeScreen">;
+type NavProp = NavigationProp<StackParamList, "HomeScreen">;
+
+type Props = {
+  route?: ScreenRouteProp;
+  navigation?: NavProp;
+};
+
 interface IValueProps {
   searchText: string;
   specialOffers: number[];
   serviceTypes: string[];
   selected: number;
+  bookmarks: string[];
 }
 
-const HomeScreen: React.FC<Props> = () => {
+const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
   const [values, setValues] = useState<IValueProps>({
     searchText: "",
     specialOffers: [1, 2, 3, 4, 5],
@@ -55,17 +65,25 @@ const HomeScreen: React.FC<Props> = () => {
       "Men Shaving",
     ],
     selected: 0,
+    bookmarks: ["0", "3"],
   });
+
+  async function bookmarkService(bookmarked: boolean, id: string) {
+    let bookmarks = values.bookmarks;
+    bookmarked
+      ? bookmarks.push(id)
+      : bookmarks.splice(bookmarks.indexOf(id), 1);
+      console.log(bookmarked)
+    setValues({ ...values, bookmarks });
+  }
+
   return (
-    <View style={{ flex: 1 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: SIZES.md,
-        }}
-      >
-        <Avatar.Image source={{ uri: "s" }} size={50} />
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <View style={styles.header}>
+        <Avatar.Image
+          source={{ uri: "https://source.unsplash.com/random/?car,porshe" }}
+          size={50}
+        />
         <View style={{ marginStart: SIZES.xxs }}>
           <View style={{ flexDirection: "row" }}>
             <Text style={{ ...TYPOGRAPHY.p, paddingEnd: 4 }}>Good Morning</Text>
@@ -76,10 +94,18 @@ const HomeScreen: React.FC<Props> = () => {
         <View
           style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}
         >
-          <TouchableOpacity style={{ padding: 4 }}>
+          <TouchableOpacity style={{ padding: 4 }} activeOpacity={0.5}>
             <Bell />
           </TouchableOpacity>
-          <TouchableOpacity style={{ padding: 4 }}>
+          <TouchableOpacity
+            style={{ padding: 4 }}
+            activeOpacity={0.5}
+            onPress={() =>
+              navigation?.navigate("BookmarksScreen", {
+                bookmarks: values.bookmarks,
+              })
+            }
+          >
             <Bookmark />
           </TouchableOpacity>
         </View>
@@ -131,65 +157,25 @@ const HomeScreen: React.FC<Props> = () => {
           }}
         />
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <View
-            style={{
-              flex: 0.82,
-              flexDirection: "row",
-              backgroundColor: "#FAFAFA",
-              borderRadius: SIZES.xs,
-              borderColor: "#E7E8EA",
-              height: 50,
-              alignItems: "center",
-              paddingHorizontal: SIZES.xxs,
-              borderWidth: 1,
-            }}
-          >
+          <View style={styles.locationContainer}>
             <LocationPin />
             <Text style={{ ...TYPOGRAPHY.p, marginStart: 4 }} numberOfLines={1}>
               267 New AVenue Park.Indore In...
             </Text>
           </View>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            style={{
-              flex: 0.16,
-              flexDirection: "row",
-              backgroundColor: "#FAFAFA",
-              borderRadius: SIZES.xs,
-              borderColor: "#E7E8EA",
-              height: 50,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingHorizontal: SIZES.xxs,
-              borderWidth: 1,
-            }}
-          >
+          <TouchableOpacity activeOpacity={0.5} style={styles.locatorContainer}>
             <Location />
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginVertical: SIZES.md,
-          }}
-        >
+        <View style={styles.seeAllContainer}>
           <Text style={TYPOGRAPHY.h3}>Special Offers</Text>
           <TouchableOpacity activeOpacity={0.5} style={{ padding: 4 }}>
             <Text>See All</Text>
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{
-            borderRadius: 30,
-            backgroundColor: "black",
-            // paddingHorizontal: SIZES.md,
-            overflow: "hidden",
-          }}
-        >
+        <View style={styles.specialOfferContainer}>
           <FlatList
             data={values.specialOffers}
             renderItem={() => <SpecialOffer />}
@@ -199,14 +185,7 @@ const HomeScreen: React.FC<Props> = () => {
           />
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginVertical: SIZES.md,
-          }}
-        >
+        <View style={styles.seeAllContainer}>
           <Text style={TYPOGRAPHY.h3}>Categories</Text>
           <TouchableOpacity activeOpacity={0.5} style={{ padding: 4 }}>
             <Text>See All</Text>
@@ -241,30 +220,23 @@ const HomeScreen: React.FC<Props> = () => {
           />
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginVertical: SIZES.md,
-          }}
-        >
+        <View style={styles.seeAllContainer}>
           <Text style={TYPOGRAPHY.h3}>Recommended Services</Text>
           <TouchableOpacity style={{ padding: 4 }}>
             <Text>See All</Text>
           </TouchableOpacity>
         </View>
 
-        <FlatList data={values.specialOffers} renderItem={() => <Service />} />
+        {services.map((item) => (
+          <Service
+            key={item.id}
+            service={item}
+            bookmarked={values.bookmarks.includes(item.id)}
+            onBookmark={bookmarkService}
+          />
+        ))}
 
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginVertical: SIZES.md,
-          }}
-        >
+        <View style={styles.seeAllContainer}>
           <Text style={TYPOGRAPHY.h3}>Discover & Explore Services</Text>
           <TouchableOpacity style={{ padding: 4 }}>
             <Text>See All</Text>
@@ -283,7 +255,14 @@ const HomeScreen: React.FC<Props> = () => {
           ))}
         </ScrollView>
 
-        <FlatList data={values.specialOffers} renderItem={() => <Service />} />
+        {services.map((item) => (
+          <Service
+            key={item.id}
+            service={item}
+            bookmarked={values.bookmarks.includes(item.id)}
+            onBookmark={bookmarkService}
+          />
+        ))}
       </ScrollView>
     </View>
   );
@@ -292,6 +271,46 @@ const HomeScreen: React.FC<Props> = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: SIZES.md,
+  },
+  locationContainer: {
+    flex: 0.82,
+    flexDirection: "row",
+    backgroundColor: "#FAFAFA",
+    borderRadius: SIZES.xs,
+    borderColor: "#E7E8EA",
+    height: 50,
+    alignItems: "center",
+    paddingHorizontal: SIZES.xxs,
+    borderWidth: 1,
+  },
+  locatorContainer: {
+    flex: 0.16,
+    flexDirection: "row",
+    backgroundColor: "#FAFAFA",
+    borderRadius: SIZES.xs,
+    borderColor: "#E7E8EA",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: SIZES.xxs,
+    borderWidth: 1,
+  },
+  seeAllContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginVertical: SIZES.md,
+  },
+  specialOfferContainer: {
+    borderRadius: 30,
+    backgroundColor: "black",
+    // paddingHorizontal: SIZES.md,
+    overflow: "hidden",
+  },
   textInputField: {
     backgroundColor: "#F5F5F5",
     color: COLORS.black,
