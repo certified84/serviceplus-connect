@@ -2,6 +2,7 @@ import { Image, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SHADOWS, SIZES, TYPOGRAPHY } from "../theme";
 import Bookmark from "../assets/svg/Bookmark";
 import Star from "../assets/svg/Star";
+import { formatMoney } from "../constants/util";
 
 type Props = {
   service: Service;
@@ -35,7 +36,7 @@ const Service: React.FC<Props> = ({
           {service.title}
         </Text>
         <Text numberOfLines={1} style={TYPOGRAPHY.h3}>
-          ₦ 1,100
+          {formatMoney(service.price)}
         </Text>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Star />
@@ -43,7 +44,7 @@ const Service: React.FC<Props> = ({
             style={{ ...TYPOGRAPHY.p, marginStart: SIZES.xxs }}
             numberOfLines={1}
           >
-            {service.rating} | {service.reviewCount} reviews
+            {service.rating} | {service.reviewCount.toLocaleString()} reviews
           </Text>
         </View>
       </View>

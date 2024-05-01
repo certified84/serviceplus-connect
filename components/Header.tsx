@@ -6,19 +6,22 @@ import More from "../assets/svg/More";
 type Props = {
   navigation: any;
   title: string;
+  showBack?: boolean;
   showOptions?: boolean;
 };
 
 const Header: React.FC<Props> = ({
   navigation,
   title,
+  showBack = true,
   showOptions = false,
 }) => (
   <View style={styles.container}>
     <TouchableOpacity
       activeOpacity={0.5}
+      disabled={!showBack}
       onPress={() => navigation?.goBack()}
-      style={styles.btnBack}
+      style={{ ...styles.btnBack, opacity: showOptions ? 1 : 0 }}
     >
       <Back />
     </TouchableOpacity>

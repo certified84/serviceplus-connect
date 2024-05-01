@@ -13,6 +13,9 @@ declare global {
     NotificationsScreen;
     ServicesScreen: { category?: Category; bookmarks?: string[] };
     CategoryiesScreen: { bookmarks: string[] };
+    BookingsScreen;
+    MessagesScreen;
+    ProfileScreen;
   };
 
   interface Category {

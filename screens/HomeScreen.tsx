@@ -5,7 +5,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  ImageBackground,
   FlatList,
 } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
@@ -15,7 +14,6 @@ import { COLORS, SIZES, TYPOGRAPHY } from "../theme";
 import Palm from "../assets/svg/Palm";
 import Search from "../assets/svg/Search";
 import SearchFilter from "../assets/svg/SearchFilter";
-import { Ionicons } from "@expo/vector-icons";
 import LocationPin from "../assets/svg/LocationPin";
 import Location from "../assets/svg/Location";
 import Cleaning from "../assets/svg/categories/Cleaning";
@@ -32,6 +30,7 @@ import Service from "../components/Service";
 import Chip from "../components/Chip";
 import { RouteProp, NavigationProp } from "@react-navigation/native";
 import { categories, services } from "../store/dummy";
+import { formatGreeting } from "../constants/util";
 
 type ScreenRouteProp = RouteProp<StackParamList, "HomeScreen">;
 type NavProp = NavigationProp<StackParamList, "HomeScreen">;
@@ -76,16 +75,23 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={styles.header}>
-        <Avatar.Image
-          source={{ uri: "https://source.unsplash.com/random/?car,porshe" }}
-          size={50}
-        />
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation?.navigate("ProfileScreen")}
+        >
+          <Avatar.Image
+            source={{ uri: "https://source.unsplash.com/random/?man,porshe" }}
+            size={50}
+          />
+        </TouchableOpacity>
         <View style={{ marginStart: SIZES.xxs }}>
           <View style={{ flexDirection: "row" }}>
-            <Text style={{ ...TYPOGRAPHY.p, paddingEnd: 4 }}>Good Morning</Text>
+            <Text style={{ ...TYPOGRAPHY.p, paddingEnd: 4 }}>
+              {formatGreeting()}
+            </Text>
             <Palm />
           </View>
-          <Text style={TYPOGRAPHY.h3}>Chaitanya Goyal</Text>
+          <Text style={TYPOGRAPHY.h3}>Samson Achiaga</Text>
         </View>
         <View
           style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}

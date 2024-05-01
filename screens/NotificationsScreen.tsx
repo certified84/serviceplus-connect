@@ -1,22 +1,7 @@
 import { RouteProp, NavigationProp } from "@react-navigation/native";
-import {
-  FlatList,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { SIZES, TYPOGRAPHY } from "../theme";
-import Back from "../assets/svg/Back";
-import More from "../assets/svg/More";
+import { Platform, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { SIZES } from "../theme";
 import EmptyDesign from "../components/EmptyDesign";
-import { services } from "../store/dummy";
-import Service from "../components/Service";
-import { useState } from "react";
 import Header from "../components/Header";
 
 type ScreenRouteProp = RouteProp<StackParamList, "NotificationsScreen">;

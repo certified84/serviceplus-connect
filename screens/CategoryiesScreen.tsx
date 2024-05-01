@@ -1,21 +1,15 @@
 import { RouteProp, NavigationProp } from "@react-navigation/native";
 import {
-  FlatList,
   Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { COLORS, SIZES, TYPOGRAPHY } from "../theme";
-import Back from "../assets/svg/Back";
-import More from "../assets/svg/More";
-import EmptyDesign from "../components/EmptyDesign";
-import { categories, services } from "../store/dummy";
-import Service from "../components/Service";
+import { categories } from "../store/dummy";
 import { useState } from "react";
 import Header from "../components/Header";
 import Category from "../components/Category";

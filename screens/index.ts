@@ -4,6 +4,9 @@ import BookmarksScreen from "./BookmarksScreen";
 import NotificationsScreen from "./NotificationsScreen";
 import ServicesScreen from "./ServicesScreen";
 import CategoryiesScreen from "./CategoryiesScreen";
+import BookingsScreen from "./BookingsScreen";
+import MessagesScreen from "./MessagesScreen";
+import ProfileScreen from "./ProfileScreen";
 
 export {
   Dashboard,
@@ -12,4 +15,7 @@ export {
   NotificationsScreen,
   ServicesScreen,
   CategoryiesScreen,
+  BookingsScreen,
+  MessagesScreen,
+  ProfileScreen,
 };

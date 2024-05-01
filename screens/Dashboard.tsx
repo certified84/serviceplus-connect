@@ -14,6 +14,9 @@ import Booking from "../assets/svg/navigation/Booking";
 import Message from "../assets/svg/navigation/Message";
 import Profile from "../assets/svg/navigation/Profile";
 import NavigationIcon from "../components/NavigationIcon";
+import BookingsScreen from "./BookingsScreen";
+import MessagesScreen from "./MessagesScreen";
+import ProfileScreen from "./ProfileScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -51,7 +54,7 @@ const Dashboard = () => {
         />
         <Tab.Screen
           name="BookingsScreen"
-          component={HomeScreen}
+          component={BookingsScreen}
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ color, focused }) => (
@@ -66,7 +69,7 @@ const Dashboard = () => {
         />
         <Tab.Screen
           name="MessagesScreen"
-          component={HomeScreen}
+          component={MessagesScreen}
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ color, focused }) => (
@@ -81,7 +84,7 @@ const Dashboard = () => {
         />
         <Tab.Screen
           name="ProfileScreen"
-          component={HomeScreen}
+          component={ProfileScreen}
           options={{
             tabBarLabel: "",
             tabBarIcon: ({ color, focused }) => (

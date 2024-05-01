@@ -59,7 +59,7 @@ const services: Service[] = [
     images: [],
     reviewCount: 8289,
     rating: 4.8,
-    price: 1100,
+    price: 1900,
     type: "repair",
   },
   {
@@ -69,7 +69,7 @@ const services: Service[] = [
     images: [],
     reviewCount: 8289,
     rating: 4.8,
-    price: 1100,
+    price: 7200,
     type: "painting",
   },
   {
@@ -79,7 +79,7 @@ const services: Service[] = [
     images: [],
     reviewCount: 8289,
     rating: 4.8,
-    price: 1100,
+    price: 8600,
     type: "repair",
   },
   {
@@ -89,7 +89,17 @@ const services: Service[] = [
     images: [],
     reviewCount: 8289,
     rating: 4.8,
-    price: 1100,
+    price: 9500,
+    type: "laundry",
+  },
+  {
+    id: "5",
+    title: "House Laundry",
+    desc: "",
+    images: [],
+    reviewCount: 8289,
+    rating: 4.2,
+    price: 10000,
     type: "laundry",
   },
 ];
