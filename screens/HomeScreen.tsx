@@ -84,7 +84,8 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
   useEffect(() => {
-    setValues({ ...values, recommendedServices: getRandomSubset(services, 5) });
+    const recommendedServices = getRandomSubset(services, 5);
+    setValues({ ...values, recommendedServices });
   }, []);
 
   async function bookmarkService(bookmarked: boolean, id: string) {

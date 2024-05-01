@@ -21,7 +21,7 @@ const NotificationsScreen: React.FC<Props> = ({ route, navigation }) => {
         paddingTop: StatusBar.currentHeight ?? 0,
       }}
     >
-      <Header navigation={navigation} title="Notifications" />
+      <Header navigation={navigation} title="Notifications" showBack />
       <EmptyDesign />
     </SafeAreaView>
   );

@@ -21,7 +21,7 @@ const Header: React.FC<Props> = ({
       activeOpacity={0.5}
       disabled={!showBack}
       onPress={() => navigation?.goBack()}
-      style={{ ...styles.btnBack, opacity: showOptions ? 1 : 0 }}
+      style={{ ...styles.btnBack, opacity: showBack ? 1 : 0 }}
     >
       <Back />
     </TouchableOpacity>
