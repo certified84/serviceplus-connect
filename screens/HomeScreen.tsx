@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   ScrollView,
@@ -48,6 +48,7 @@ interface IValueProps {
   searchText: string;
   search: boolean;
   specialOffers: number[];
+  currentSpecialOffer: number;
   categories: Category[];
   selected: string;
   bookmarks: string[];
@@ -59,6 +60,7 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
     searchText: "",
     search: false,
     specialOffers: [1, 2, 3, 4, 5],
+    currentSpecialOffer: 0,
     categories: [
       {
         id: "-1",
@@ -71,6 +73,15 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
     bookmarks: [],
     recommendedServices: [],
   });
+
+  const slidesRef = useRef(null);
+
+  const viewableItemsChanged = useRef(({ viewableItems }) => {
+    setValues({ ...values, currentSpecialOffer: viewableItems[0].index }); // This line keeps throwing up an error when the phone is rotated
+  }).current;
+
+  // next slide need to be 50% on screen before it will change
+  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
   useEffect(() => {
     setValues({ ...values, recommendedServices: getRandomSubset(services, 5) });
@@ -256,24 +267,25 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
             <View style={styles.specialOfferContainer}>
               <FlatList
                 data={values.specialOffers}
-                // style={{flex: 1}}
-                // contentContainerStyle={{ flex: 1 }}
                 renderItem={() => <SpecialOffer />}
                 horizontal
-                // pagingEnabled
+                pagingEnabled
                 showsHorizontalScrollIndicator={false}
+                onViewableItemsChanged={viewableItemsChanged}
+                viewabilityConfig={viewConfig}
+                ref={slidesRef}
                 // getItemLayout={(_, index) => ({
                 //   length: Dimensions.get('window').width,
                 //   offset: Dimensions.get('window').width * index,
                 //   index,
                 // })}
               />
-              {/* <ScrollView horizontal pagingEnabled>
-                {values.specialOffers.map(() => <SpecialOffer />)}
-              </ScrollView> */}
               <View style={styles.indicatorContainer}>
                 {values.specialOffers.map((index) => (
-                  <Indicator key={index} selected={index === 2} />
+                  <Indicator
+                    key={index}
+                    selected={index === values.currentSpecialOffer + 1}
+                  />
                 ))}
               </View>
             </View>
