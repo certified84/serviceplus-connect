@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -30,7 +30,7 @@ import Service from "../components/Service";
 import Chip from "../components/Chip";
 import { RouteProp, NavigationProp } from "@react-navigation/native";
 import { categories, services } from "../store/dummy";
-import { formatGreeting } from "../constants/util";
+import { formatGreeting, getRandomSubset } from "../constants/util";
 
 type ScreenRouteProp = RouteProp<StackParamList, "HomeScreen">;
 type NavProp = NavigationProp<StackParamList, "HomeScreen">;
@@ -46,6 +46,7 @@ interface IValueProps {
   categories: Category[];
   selected: string;
   bookmarks: string[];
+  recommendedServices: Service[];
 }
 
 const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
@@ -62,7 +63,12 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
     ],
     selected: "all",
     bookmarks: [],
+    recommendedServices: [],
   });
+
+  useEffect(() => {
+    setValues({ ...values, recommendedServices: getRandomSubset(services, 5) });
+  }, []);
 
   async function bookmarkService(bookmarked: boolean, id: string) {
     let bookmarks = values.bookmarks;
@@ -301,7 +307,7 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {services.map((item) => (
+        {values.recommendedServices.map((item) => (
           <Service
             key={item.id}
             service={item}

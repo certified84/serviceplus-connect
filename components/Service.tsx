@@ -17,10 +17,7 @@ const Service: React.FC<Props> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: "https://source.unsplash.com/random/?car,porshe" }}
-        style={styles.img}
-      />
+      <Image source={{ uri: service.images[0] }} style={styles.img} />
       <View style={styles.innerContainer}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={{ ...TYPOGRAPHY.p, marginTop: 4 }}>Kylee Danford</Text>
