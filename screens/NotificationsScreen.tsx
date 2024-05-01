@@ -1,5 +1,5 @@
 import { RouteProp, NavigationProp } from "@react-navigation/native";
-import { Platform, SafeAreaView, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import { SIZES } from "../theme";
 import EmptyDesign from "../components/EmptyDesign";
 import Header from "../components/Header";
@@ -18,7 +18,7 @@ const NotificationsScreen: React.FC<Props> = ({ route, navigation }) => {
       style={{
         flex: 1,
         backgroundColor: "white",
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingTop: StatusBar.currentHeight ?? 0,
       }}
     >
       <Header navigation={navigation} title="Notifications" />

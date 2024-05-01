@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   Platform,
+  Dimensions,
 } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
 import Bell from "../assets/svg/Bell";
@@ -33,6 +34,7 @@ import { RouteProp, NavigationProp } from "@react-navigation/native";
 import { categories, services } from "../store/dummy";
 import { formatGreeting, getRandomSubset } from "../constants/util";
 import { Ionicons } from "@expo/vector-icons";
+import Indicator from "../components/Indicator";
 
 type ScreenRouteProp = RouteProp<StackParamList, "HomeScreen">;
 type NavProp = NavigationProp<StackParamList, "HomeScreen">;
@@ -88,8 +90,8 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
         <View style={{ flex: 1 }}>
           <View style={styles.searchHeader}>
             <Ionicons
-              style={{ padding: SIZES.xs, marginBottom: SIZES.xxs }}
-              size={SIZES.lg}
+              style={{ padding: SIZES.xxs, marginBottom: SIZES.xxs }}
+              size={30}
               name={Platform.OS === "android" ? "arrow-back" : "chevron-back"}
               onPress={() => setValues({ ...values, search: false })}
             />
@@ -223,9 +225,7 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
             <SearchFilter />
           </TouchableOpacity>
 
-          <ScrollView
-            style={{ paddingHorizontal: SIZES.md, }}
-          >
+          <ScrollView style={{ paddingHorizontal: SIZES.md }}>
             <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
@@ -256,11 +256,26 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
             <View style={styles.specialOfferContainer}>
               <FlatList
                 data={values.specialOffers}
+                // style={{flex: 1}}
+                // contentContainerStyle={{ flex: 1 }}
                 renderItem={() => <SpecialOffer />}
                 horizontal
-                pagingEnabled
+                // pagingEnabled
                 showsHorizontalScrollIndicator={false}
+                // getItemLayout={(_, index) => ({
+                //   length: Dimensions.get('window').width,
+                //   offset: Dimensions.get('window').width * index,
+                //   index,
+                // })}
               />
+              {/* <ScrollView horizontal pagingEnabled>
+                {values.specialOffers.map(() => <SpecialOffer />)}
+              </ScrollView> */}
+              <View style={styles.indicatorContainer}>
+                {values.specialOffers.map((index) => (
+                  <Indicator key={index} selected={index === 2} />
+                ))}
+              </View>
             </View>
 
             <View style={styles.seeAllContainer}>
@@ -467,7 +482,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     padding: SIZES.sm,
     paddingHorizontal: SIZES.md,
-    margin: SIZES.md
+    margin: SIZES.md,
   },
   locationContainer: {
     flex: 0.82,
@@ -501,8 +516,16 @@ const styles = StyleSheet.create({
   specialOfferContainer: {
     borderRadius: 30,
     backgroundColor: "black",
-    // paddingHorizontal: SIZES.md,
     overflow: "hidden",
+  },
+  indicatorContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: SIZES.sm,
+    left: 0,
+    right: 0,
   },
   textInputField: {
     backgroundColor: "#F5F5F5",

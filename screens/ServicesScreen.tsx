@@ -1,11 +1,5 @@
 import { RouteProp, NavigationProp } from "@react-navigation/native";
-import {
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-} from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from "react-native";
 import { SIZES } from "../theme";
 import EmptyDesign from "../components/EmptyDesign";
 import { services } from "../store/dummy";
@@ -68,7 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: StatusBar.currentHeight ?? 0,
   },
   innerContainer: {
     flex: 1,
