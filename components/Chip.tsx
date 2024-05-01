@@ -2,17 +2,16 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { COLORS, SIZES, TYPOGRAPHY } from "../theme";
 
 type Props = {
-  text: string;
-  index: number;
+  category: Category,
   selected: boolean;
-  onPress: (index: number) => void;
+  onPress: (type: string) => void;
 };
 
-const Chip: React.FC<Props> = ({ text, selected, onPress, index }) => {
+const Chip: React.FC<Props> = ({ category, selected, onPress }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => (!selected ? onPress(index) : {})}
+      onPress={() => (!selected ? onPress(category.type) : {})}
       style={{
         padding: SIZES.xs,
         paddingHorizontal: SIZES.lg,
@@ -28,7 +27,7 @@ const Chip: React.FC<Props> = ({ text, selected, onPress, index }) => {
       <Text
         style={{ ...TYPOGRAPHY.h4, color: selected ? COLORS.white : "#545454" }}
       >
-        {text}
+        {category.title}
       </Text>
     </TouchableOpacity>
   );

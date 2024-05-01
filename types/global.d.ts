@@ -8,13 +8,17 @@ declare global {
   }
 
   export type StackParamList = {
-    HomeScreen: {};
+    HomeScreen;
     BookmarksScreen: { bookmarks: string[] };
+    NotificationsScreen;
+    ServicesScreen: { category?: Category; bookmarks?: string[] };
+    CategoryiesScreen: { bookmarks: string[] };
   };
 
   interface Category {
     id: string;
     title: string;
+    type: string;
   }
 
   interface Service {
@@ -25,5 +29,14 @@ declare global {
     reviewCount: number;
     rating: number;
     price: number;
+    type:
+      | "cleaning"
+      | "repair"
+      | "painting"
+      | "laundry"
+      | "appliance"
+      | "plumbing"
+      | "movers"
+      | "shaving";
   }
 }

@@ -1,60 +1,59 @@
 import { RouteProp, NavigationProp } from "@react-navigation/native";
 import {
-  FlatList,
   Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
 } from "react-native";
-import { SIZES, TYPOGRAPHY } from "../theme";
-import Back from "../assets/svg/Back";
-import More from "../assets/svg/More";
+import { SIZES } from "../theme";
 import EmptyDesign from "../components/EmptyDesign";
 import { services } from "../store/dummy";
 import Service from "../components/Service";
 import { useState } from "react";
 import Header from "../components/Header";
 
-type ScreenRouteProp = RouteProp<StackParamList, "BookmarksScreen">;
-type NavProp = NavigationProp<StackParamList, "BookmarksScreen">;
+type ScreenRouteProp = RouteProp<StackParamList, "ServicesScreen">;
+type NavProp = NavigationProp<StackParamList, "ServicesScreen">;
 
 type Props = {
   route?: ScreenRouteProp;
   navigation?: NavProp;
 };
 
-const BookmarksScreen: React.FC<Props> = ({ route, navigation }) => {
+const ServicesScreen: React.FC<Props> = ({ route, navigation }) => {
+  const category = route?.params.category;
+
   const [values, setValues] = useState({
-    bookmarks: route?.params.bookmarks ?? [],
+    bookmarks: route?.params.bookmarks,
+    services: services.filter((item) => item.type === category?.type),
   });
 
   async function bookmarkService(bookmarked: boolean, id: string) {
     let bookmarks = values.bookmarks;
     bookmarked
-      ? bookmarks.push(id)
-      : bookmarks.splice(bookmarks.indexOf(id), 1);
+      ? bookmarks?.push(id)
+      : bookmarks?.splice(bookmarks.indexOf(id), 1);
     setValues({ ...values, bookmarks });
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} title="My Bookmarks" showOptions />
-      {values.bookmarks!.length > 0 ? (
+      <Header
+        navigation={navigation}
+        title={category?.title ?? ""}
+        showOptions
+      />
+      {values.services!.length > 0 ? (
         <ScrollView style={styles.innerContainer}>
-          {services
-            .filter((item) => values.bookmarks.includes(item.id))
-            .map((item) => (
-              <Service
-                key={item.id}
-                service={item}
-                bookmarked
-                onBookmark={bookmarkService}
-              />
-            ))}
+          {values.services.map((item) => (
+            <Service
+              key={item.id}
+              service={item}
+              bookmarked={values.bookmarks?.includes(item.id)}
+              onBookmark={bookmarkService}
+            />
+          ))}
         </ScrollView>
       ) : (
         <EmptyDesign />
@@ -63,7 +62,7 @@ const BookmarksScreen: React.FC<Props> = ({ route, navigation }) => {
   );
 };
 
-export default BookmarksScreen;
+export default ServicesScreen;
 
 const styles = StyleSheet.create({
   container: {

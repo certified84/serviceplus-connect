@@ -31,7 +31,7 @@ import SpecialOffer from "../components/SpecialOffer";
 import Service from "../components/Service";
 import Chip from "../components/Chip";
 import { RouteProp, NavigationProp } from "@react-navigation/native";
-import { services } from "../store/dummy";
+import { categories, services } from "../store/dummy";
 
 type ScreenRouteProp = RouteProp<StackParamList, "HomeScreen">;
 type NavProp = NavigationProp<StackParamList, "HomeScreen">;
@@ -44,8 +44,8 @@ type Props = {
 interface IValueProps {
   searchText: string;
   specialOffers: number[];
-  serviceTypes: string[];
-  selected: number;
+  categories: Category[];
+  selected: string;
   bookmarks: string[];
 }
 
@@ -53,19 +53,16 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
   const [values, setValues] = useState<IValueProps>({
     searchText: "",
     specialOffers: [1, 2, 3, 4, 5],
-    serviceTypes: [
-      "All",
-      "Cleaning",
-      "Reparing",
-      "Painting",
-      "Laundry",
-      "Appliance",
-      "Plumbing",
-      "Movers",
-      "Men Shaving",
+    categories: [
+      {
+        id: "-1",
+        title: "All",
+        type: "all",
+      },
+      ...categories,
     ],
-    selected: 0,
-    bookmarks: ["0", "3"],
+    selected: "all",
+    bookmarks: [],
   });
 
   async function bookmarkService(bookmarked: boolean, id: string) {
@@ -73,7 +70,6 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
     bookmarked
       ? bookmarks.push(id)
       : bookmarks.splice(bookmarks.indexOf(id), 1);
-      console.log(bookmarked)
     setValues({ ...values, bookmarks });
   }
 
@@ -94,7 +90,11 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
         <View
           style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}
         >
-          <TouchableOpacity style={{ padding: 4 }} activeOpacity={0.5}>
+          <TouchableOpacity
+            style={{ padding: 4 }}
+            activeOpacity={0.5}
+            onPress={() => navigation?.navigate("NotificationsScreen")}
+          >
             <Bell />
           </TouchableOpacity>
           <TouchableOpacity
@@ -187,21 +187,61 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
 
         <View style={styles.seeAllContainer}>
           <Text style={TYPOGRAPHY.h3}>Categories</Text>
-          <TouchableOpacity activeOpacity={0.5} style={{ padding: 4 }}>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={{ padding: 4 }}
+            onPress={() =>
+              navigation?.navigate("CategoryiesScreen", {
+                bookmarks: values.bookmarks,
+              })
+            }
+          >
             <Text>See All</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.iconsRow}>
-          <Category text="Cleaning" icon={<Cleaning />} onPress={() => {}} />
-          <Category text="Repairing" icon={<Repairing />} onPress={() => {}} />
+          <Category
+            text="Cleaning"
+            icon={<Cleaning />}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "cleaning"),
+              })
+            }
+          />
+          <Category
+            text="Repairing"
+            icon={<Repairing />}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "repair"),
+              })
+            }
+          />
           <Category
             text="Painting"
             icon={<Painting />}
             badge="New"
-            onPress={() => {}}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "painting"),
+              })
+            }
           />
-          <Category text="Laundry" icon={<Laundry />} onPress={() => {}} />
+          <Category
+            text="Laundry"
+            icon={<Laundry />}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "laundry"),
+              })
+            }
+          />
         </View>
 
         <View style={styles.iconsRow}>
@@ -209,14 +249,42 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
             text="Appliance"
             icon={<Appliance />}
             badge="New"
-            onPress={() => {}}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "appliance"),
+              })
+            }
           />
-          <Category text="Plumbing" icon={<Plumbing />} onPress={() => {}} />
-          <Category text="Movers" icon={<Movers />} onPress={() => {}} />
           <Category
-            text="MenShaving"
+            text="Plumbing"
+            icon={<Plumbing />}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "plumbing"),
+              })
+            }
+          />
+          <Category
+            text="Movers"
+            icon={<Movers />}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "movers"),
+              })
+            }
+          />
+          <Category
+            text="Men's Shaving"
             icon={<MenShaving />}
-            onPress={() => {}}
+            onPress={() =>
+              navigation?.navigate("ServicesScreen", {
+                bookmarks: values.bookmarks,
+                category: categories.find((item) => item.type === "shaving"),
+              })
+            }
           />
         </View>
 
@@ -244,25 +312,31 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {values.serviceTypes.map((item, index) => (
+          {values.categories.map((item, index) => (
             <Chip
               key={index}
-              index={index}
-              selected={index === values.selected}
-              text={item}
-              onPress={(index) => setValues({ ...values, selected: index })}
+              selected={item.type === values.selected}
+              category={item}
+              onPress={(selected) => setValues({ ...values, selected })}
             />
           ))}
         </ScrollView>
 
-        {services.map((item) => (
-          <Service
-            key={item.id}
-            service={item}
-            bookmarked={values.bookmarks.includes(item.id)}
-            onBookmark={bookmarkService}
-          />
-        ))}
+        <View style={{ marginTop: SIZES.sm }}>
+          {services
+            .filter((item) => {
+              if (values.selected === "all") return true;
+              else return item.type === values.selected;
+            })
+            .map((item) => (
+              <Service
+                key={item.id}
+                service={item}
+                bookmarked={values.bookmarks.includes(item.id)}
+                onBookmark={bookmarkService}
+              />
+            ))}
+        </View>
       </ScrollView>
     </View>
   );

@@ -1,6 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { COLORS } from "../theme";
-import { BookmarksScreen, Dashboard } from "../screens";
+import {
+  BookmarksScreen,
+  CategoryiesScreen,
+  Dashboard,
+  NotificationsScreen,
+  ServicesScreen,
+} from "../screens";
 
 const Stack = createStackNavigator();
 
@@ -31,8 +37,29 @@ const index = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="NotificationsScreen"
+        component={NotificationsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ServicesScreen"
+        component={ServicesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="CategoryiesScreen"
+        component={CategoryiesScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };
 
-export default index
+export default index;
