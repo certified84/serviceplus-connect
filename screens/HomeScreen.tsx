@@ -30,7 +30,7 @@ import MenShaving from "../assets/svg/categories/MenShaving";
 import SpecialOffer from "../components/SpecialOffer";
 import Service from "../components/Service";
 import Chip from "../components/Chip";
-import { RouteProp, NavigationProp } from "@react-navigation/native";
+import { RouteProp, NavigationProp, useIsFocused } from "@react-navigation/native";
 import { categories, services } from "../store/dummy";
 import { formatGreeting, getRandomSubset } from "../constants/util";
 import { Ionicons } from "@expo/vector-icons";
@@ -83,10 +83,13 @@ const HomeScreen: React.FC<Props> = ({ route, navigation }) => {
   // next slide need to be 50% on screen before it will change
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
+  const focused = useIsFocused()
   useEffect(() => {
-    const recommendedServices = getRandomSubset(services, 5);
-    setValues({ ...values, recommendedServices });
-  }, []);
+    let recommendedServices = getRandomSubset(services, 5);
+    if (recommendedServices.length === 0) recommendedServices = services.slice(0, 5)
+    setValues({ ...values, recommendedServices: [...recommendedServices] });
+    console.log(recommendedServices.length)
+  }, [focused]);
 
   async function bookmarkService(bookmarked: boolean, id: string) {
     let bookmarks = values.bookmarks;

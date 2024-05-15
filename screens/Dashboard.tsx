@@ -31,7 +31,7 @@ const Dashboard = () => {
         activeColor={"#545454"}
         inactiveColor={COLORS.white}
         barStyle={styles.navigatorTabBar}
-        shifting={true}
+        shifting={false}
         screenListeners={{
           tabPress: (e) => {},
         }}

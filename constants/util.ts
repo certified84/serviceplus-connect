@@ -24,6 +24,7 @@ const shuffleArray = (array: any[]) => {
   return array;
 };
 const getRandomSubset = (arr: any[], count: number) => {
+  // if (count > arr.length) return arr;
   const shuffledArray = shuffleArray(arr.slice());
   return shuffledArray.slice(0, count);
 };
